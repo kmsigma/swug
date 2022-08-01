@@ -8,6 +8,49 @@ if ( -not $SwisConnection ) {
     $SwisConnection = Connect-Swis -Hostname $Hostname -Credential ( Get-Credential -Message "Enter your Orion credentials for $Hostname" )
 }
 
+# Let's see if the custom property even exists TO be updated.
+$CpQuery = @"
+SELECT DisplayName, TargetEntity
+FROM Orion.CustomProperty
+WHERE TargetEntity = 'Orion.NodesCustomProperties'
+  AND DisplayName = 'DomainName'
+"@
+
+$CpExists = Get-SwisData -SwisConnection $SwisConnection -Query $CpQuery
+
+if ( -not $CpExists ) {
+    
+    $PropertyName = 'DomainName'
+    $Description = 'Domain name to which the node is a member'
+    $ValueType = 'nvarchar'
+    $Size = 256
+    $ValidRange = $null
+    $Parser = $null
+    $Header = $null
+    $Alignment = $null
+    $Format = $null
+    $Units = $null
+    $Usages = @{
+        IsForAlerting       = $true;
+        IsForAssetInventory = $true
+        IsForFiltering      = $true;
+        IsForGrouping       = $true;
+        IsForReporting      = $true;
+        IsForEntityDetail   = $true;
+    }
+    $Mandatory = $false;
+    $Default = $null
+    $SourceId = $null
+    $SourceName = $null
+    $DisplayName = $PropertyName
+
+
+    Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.NodesCustomProperties' -Verb 'CreateCustomProperty' -Arguments ($PropertyName, $Description, $ValueType, $Size, $ValidRange, $Parser, $Header, $Alignment, $Format, $Units, $Usages, $Mandatory, $Default, $SourceId, $SourceName, $DisplayName)
+}
+else {
+    Write-Host "Custom Property Alerady Exists"
+}
+
 # We're putting this query in a here-string (multi-line format)
 # I prefer it this way because it reads easier and spaces don't matter
 $Query = @"
