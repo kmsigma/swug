@@ -1,6 +1,7 @@
 <#
 
 Reset all changes from SWUG scripts
+Most Recent Updates: 02-AUG-2022
 
 #>
 if ( -not $SwisConnection ) {
