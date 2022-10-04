@@ -8,9 +8,9 @@ if ( -not $SwisConnection ) {
     $SwisConnection = Connect-Swis -Hostname $Hostname -Credential ( Get-Credential -Message "Enter your Orion credentials for $Hostname" )
 }
 
-Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Uri FROM Orion.Nodes WHERE Caption = 'WESTIIS01V'"
+Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Uri FROM Orion.Nodes WHERE Caption = 'westiis01v.demo.lab'"
 
-$Uri = Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Uri FROM Orion.Nodes WHERE Caption = 'WESTIIS01V'"
+$Uri = Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Uri FROM Orion.Nodes WHERE Caption = 'westiis01v.demo.lab'"
 
 $Properties = @{
     Caption = 'WESTWEB01v'
