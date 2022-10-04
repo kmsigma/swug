@@ -73,7 +73,7 @@ $EntityXml
 
 Write-Host "Unmuting $( $MutedThings.Count) entities"
 ForEach ( $Uri in $MutedThings.Uri ) {
-    Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.AlertSuppression' -Verb 'ResumeAlerts' -Arguments @(, $Uri)
+    Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.AlertSuppression' -Verb 'ResumeAlerts' -Arguments ( $Uri )
 }
 Write-Host " [COMPLETED]" -ForegroundColor Green
 
