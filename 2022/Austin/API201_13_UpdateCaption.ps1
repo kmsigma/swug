@@ -13,7 +13,7 @@ Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Uri FROM Orion.Nodes
 $Uri = Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Uri FROM Orion.Nodes WHERE Caption = 'westiis01v.demo.lab'"
 
 $Properties = @{
-    Caption = 'WESTWEB01v'
+    Caption = 'westweb01v.demo.lab'
 }
 
 Set-SwisObject -SwisConnection $SwisConnection -Uri $Uri -Properties $Properties
