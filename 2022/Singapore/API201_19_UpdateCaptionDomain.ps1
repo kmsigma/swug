@@ -32,7 +32,7 @@ if ( -not $CpExists ) {
     $Units = $null
     $Usages = @{
         IsForAlerting       = $true;
-        IsForAssetInventory = $true
+        IsForAssetInventory = $true;
         IsForFiltering      = $true;
         IsForGrouping       = $true;
         IsForReporting      = $true;
