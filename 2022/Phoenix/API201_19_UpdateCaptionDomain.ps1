@@ -46,9 +46,17 @@ if ( -not $CpExists ) {
 
 
     Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.NodesCustomProperties' -Verb 'CreateCustomProperty' -Arguments ($PropertyName, $Description, $ValueType, $Size, $ValidRange, $Parser, $Header, $Alignment, $Format, $Units, $Usages, $Mandatory, $Default, $SourceId, $SourceName, $DisplayName)
+
+    do {
+        
+        Write-Host "Sleeping for 15 seconds until the custom property exists and is replicated"
+        Start-Sleep -Seconds 15
+    }
+    while ( -not ( Get-SwisData -SwisConnection $SwisConnection -Query 'SELECT DomainName FROM Orion.NodesCustomProperties' ) )
+
 }
 else {
-    Write-Host "Custom Property Alerady Exists"
+    Write-Host "Custom Property Already Exists"
 }
 
 # We're putting this query in a here-string (multi-line format)

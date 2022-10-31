@@ -54,6 +54,17 @@ ForEach ( $ResetNode in $NodesToReset ) {
     Write-Host " [COMPLETED]" -ForegroundColor Green
 }
 
+# Remove Custom Property
+try { 
+    if ( Get-SwisData -SwisConnection $SwisConnection -Query 'SELECT DomainName FROM Orion.NodesCustomProperties' ) {
+        Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.NodesCustomProperties' -Verb 'DeleteCustomProperty' -Arguments 'DomainName'
+    }
+}
+catch {
+    Write-Host "Node Custom Property 'DomainName' does not exist." -ForegroundColor Red
+}
+
+
 # Resetting Muted Devices
 
 $MutedThingsQuery = @"
@@ -71,13 +82,17 @@ $EntityXml += '</ArrayOfstring>'
 $EntityXml
 #>
 
-Write-Host "Unmuting $( $MutedThings.Count) entities"
-ForEach ( $Uri in $MutedThings.Uri ) {
-    Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.AlertSuppression' -Verb 'ResumeAlerts' -Arguments @(, $Uri)
+if ( $MutedThings ) {
+    Write-Host "Unmuting $( $MutedThings.Count) entities"
+    # Extract out the Uris of the muted devices:
+    $Uris += $MutedThings | ForEach-Object { $_.Uri }
+    Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.AlertSuppression' -Verb 'ResumeAlerts' -Arguments @( , $Uris )
+    Write-Host " [COMPLETED]" -ForegroundColor Green
+
+
+    $SuppressionState = Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.AlertSuppression' -Verb 'GetAlertSuppressionState' -Arguments @( , $Uris )
+    $SuppressionState.EntityAlertSuppressionState | Select-Object EntityUri, SuppressionMode
 }
-Write-Host " [COMPLETED]" -ForegroundColor Green
-
-
-For ( $i = 0; $i -lt $MutedThings.Count; $i++ ) {
-    Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName 'Orion.AlertSuppression' -Verb 'GetAlertSuppressionState' -Arguments ( @(, $MutedThings[$i].Uri ))
+else {
+    Write-Host "Nothing is currently muted" -ForegroundColor Red
 }

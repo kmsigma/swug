@@ -12,8 +12,8 @@ if ( -not $SwisConnection ) {
 $NodesToMute = Get-SwisData -SwisConnection $SwisConnection -Query "SELECT Caption, Uri FROM Orion.Nodes WHERE IPAddress LIKE '10.149.%.%'"
 
 # We are in the central time zone, right now, so those are reflected in the hand-typed entries below
-$suppressFrom  = Get-Date "2022-09-17 01:00 AM" # 11 PM, Friday - Los Angeles Time
-$suppressUntil = Get-Date "2022-09-18 04:00 PM" # 5 PM, Sunday  - Los Angeles Time
+$suppressFrom  = Get-Date "2022-11-05 12:00 AM" # 11 PM, Friday - Los Angeles Time
+$suppressUntil = Get-Date "2022-11-06 04:00 PM" # 5 PM, Sunday  - Los Angeles Time
 # Flip them to UTC
 $suppressFrom = $suppressFrom.ToUniversalTime()
 $suppressUntil = $suppressUntil.ToUniversalTime()
