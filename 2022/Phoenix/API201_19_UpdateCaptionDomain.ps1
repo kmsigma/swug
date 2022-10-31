@@ -49,7 +49,7 @@ if ( -not $CpExists ) {
 
     do {
         
-        Write-Host "Sleeping for 15 seconds until the custom property exists and is replicated"
+        Write-Host "Sleeping for 15 seconds until the node custom property 'DomainName' exists and is replicated"
         Start-Sleep -Seconds 15
     }
     while ( -not ( Get-SwisData -SwisConnection $SwisConnection -Query 'SELECT DomainName FROM Orion.NodesCustomProperties' ) )
@@ -67,7 +67,10 @@ SELECT [Node].Caption
      , [Node].CustomProperties.DomainName
      , [Node].CustomProperties.Uri AS [CPUri]
 FROM Orion.Nodes AS [Node]
-WHERE [Node].Caption LIKE '%.demo.lab'
+WHERE ( 
+    [Node].Caption NOT LIKE '%.demo.lab'
+    OR [Node].Caption NOT LIKE '%.dmz.lab'
+) AND [Node].ObjectSubType IN ('SNMP', 'WMI', 'Agent')
 ORDER BY [Node].Caption
 "@
 

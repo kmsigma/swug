@@ -34,9 +34,8 @@ FROM Orion.Nodes AS [Node]
 WHERE (
      IsNull([Node].CustomProperties.DomainName, '') <> ''
   OR [Node].Caption NOT LIKE '%.demo.lab'
-  )
- AND [Node].ObjectSubType <> 'ICMP'
-
+  OR [Node].Caption NOT LIKE '%.dmz.lab'
+  ) AND [Node].ObjectSubType IN ('SNMP', 'WMI', 'Agent')
 ORDER BY [Node].Caption
 "@
 
@@ -44,6 +43,7 @@ $NodesToReset = Get-SwisData -SwisConnection $SwisConnection -Query $ResetCaptio
 
 ForEach ( $ResetNode in $NodesToReset ) {
     $NewCaption = ( $ResetNode.Caption.Split('.')[0] ).ToLower() + '.demo.lab'
+    $NewCaption = ( $ResetNode.Caption.Split('.')[0] ).ToLower() + '.' + $ResetNode.DomainName
     Write-Host "Updating $( $ResetNode.Caption ) to $NewCaption" -NoNewline
     Set-SwisObject -SwisConnection $SwisConnection -Uri $ResetNode.NodeUri -Properties @{
         'Caption' = $NewCaption
