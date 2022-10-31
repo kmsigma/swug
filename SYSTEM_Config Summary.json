@@ -1,0 +1,2026 @@
+{
+  "version": 1,
+  "dashboards": [
+    {
+      "widgets": [
+        {
+          "unique_key": "NCM-LastInventoryDate",
+          "location": {
+            "x": 6,
+            "y": 4,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-RecentConfigChanges",
+          "location": {
+            "x": 3,
+            "y": 2,
+            "cols": 4,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-Backups",
+          "location": {
+            "x": 6,
+            "y": 0,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-LastConfigBackupDate",
+          "location": {
+            "x": 3,
+            "y": 4,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-RunningVsStartupConflict",
+          "location": {
+            "x": 9,
+            "y": 4,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-Jobs",
+          "location": {
+            "x": 9,
+            "y": 0,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-JobsWithErrors",
+          "location": {
+            "x": 7,
+            "y": 2,
+            "cols": 5,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-FirmwareVulnerabilities",
+          "location": {
+            "x": 0,
+            "y": 6,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-AllNcmNodesStatus",
+          "location": {
+            "x": 0,
+            "y": 0,
+            "cols": 6,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-PolicyViolations",
+          "location": {
+            "x": 3,
+            "y": 6,
+            "cols": 3,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-PendingApproval",
+          "location": {
+            "x": 6,
+            "y": 6,
+            "cols": 2,
+            "rows": 2
+          },
+          "reference": false
+        },
+        {
+          "unique_key": "NCM-AllNcmNodes",
+          "location": {
+            "x": 0,
+            "y": 2,
+            "cols": 3,
+            "rows": 4
+          },
+          "reference": false
+        }
+      ],
+      "parent": null,
+      "feature": null,
+      "unique_key": "NCM-Config-Summary",
+      "name": "Config Summary",
+      "private": null
+    }
+  ],
+  "widgets": [
+    {
+      "type": "proportional",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Last inventory date",
+            "subtitle": "",
+            "url": "",
+            "description": ""
+          }
+        },
+        "chart": {
+          "providers": {
+            "dataSource": {
+              "providerId": "ProportionalSwqlDatasourceService",
+              "properties": {
+                "dataFields": [
+                  {
+                    "id": "TimeRangeDescription",
+                    "label": "TimeRangeDescription",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  },
+                  {
+                    "id": "Color",
+                    "label": "Color",
+                    "dataType": "System.String"
+                  }
+                ],
+                "swql": "SELECT 'Last 30 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#00a754' as Color, '/apps/ncm/nodes/last-inventory-date/30' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=30\nUNION ALL\n(SELECT '30 - 60 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#fec406' as Color, '/apps/ncm/nodes/last-inventory-date/60' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=60)\nUNION ALL\n(SELECT '60 - 90 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#dd2c00' as Color, '/apps/ncm/nodes/last-inventory-date/90' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays =90)\nUNION ALL\n(SELECT 'Older than 90 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#950000' as Color, '/apps/ncm/nodes/last-inventory-date/100' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=100)\nUNION ALL\n(SELECT 'Never' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#d7d7d7' as Color, '/apps/ncm/nodes/last-inventory-date/1000' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=1000)",
+                "categoryField": "TimeRangeDescription",
+                "valueField": "TheCount",
+                "dataFormat": "custom",
+                "iconMappingField": "",
+                "colorMappingField": "Color",
+                "type": "hand-edit",
+                "editor": {}
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "chart",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "dataFields": [
+                      {
+                        "id": "TimeRangeDescription",
+                        "label": "TimeRangeDescription",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      },
+                      {
+                        "id": "Color",
+                        "label": "Color",
+                        "dataType": "System.String"
+                      }
+                    ],
+                    "swql": "SELECT 'Last 30 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#00a754' as Color, '/apps/ncm/nodes/last-inventory-date/30' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=30\nUNION ALL\n(SELECT '30 - 60 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#fec406' as Color, '/apps/ncm/nodes/last-inventory-date/60' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=60)\nUNION ALL\n(SELECT '60 - 90 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#dd2c00' as Color, '/apps/ncm/nodes/last-inventory-date/90' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays =90)\nUNION ALL\n(SELECT 'Older than 90 days' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#950000' as Color, '/apps/ncm/nodes/last-inventory-date/100' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=100)\nUNION ALL\n(SELECT 'Never' as TimeRangeDescription,\nCOUNT (1) as TheCount, '#d7d7d7' as Color, '/apps/ncm/nodes/last-inventory-date/1000' as Link FROM NCM.InventoryStatistic\nwhere TimeRangeDays=1000)",
+                    "categoryField": "TimeRangeDescription",
+                    "valueField": "TheCount",
+                    "dataFormat": "custom",
+                    "iconMappingField": "",
+                    "colorMappingField": "Color",
+                    "type": "hand-edit",
+                    "editor": {}
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true,
+              "chartOptions": {
+                "type": "PieChart",
+                "legendPlacement": "Right",
+                "legendFormatter": {
+                  "componentType": "GenericValueFormatterComponent"
+                }
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-LastInventoryDate",
+      "name": "Last inventory date",
+      "private": false
+    },
+    {
+      "type": "table",
+      "configuration": {
+        "header": {
+          "properties": {
+            "title": "Recent Config Changes",
+            "subtitle": "Last 24 hours",
+            "url": "",
+            "description": "",
+            "collapsible": false,
+            "collapsed": true
+          }
+        },
+        "table": {
+          "providers": {
+            "dataSource": {
+              "providerId": "TableSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT \n ONodes.Status,\n ONodes.DetailsUrl,\n NNodes.NodeCaption,\n ConfigArchive.ConfigTitle,\n ConfigArchive.DownloadTime,\n '/Orion/NCM/ConfigChangeReport.aspx?ConfigID=' + ToString (ConfigArchive.ConfigID) + '&ComparisonType=4&NodeID=' + ToString (NNodes.NodeID) as ConfigChnageReportUrl\nFROM Orion.Nodes AS ONodes \n INNER JOIN NCM.Nodes AS NNodes ON NNodes.CoreNodeId = ONodes.NodeId\n INNER JOIN NCM.ConfigArchive as ConfigArchive ON NNodes.NodeId = ConfigArchive.NodeId\n INNER JOIN Cirrus.CacheDiffResults as DiffResults ON ConfigArchive.ConfigID = DiffResults.ConfigID\nWHERE (DownloadTime >= ADDHOUR(-24, GETDATE()) AND DiffResults.ComparisonType = 4 AND DiffResults.DiffFlag = 1)",
+                "dataFields": [
+                  {
+                    "id": "Status",
+                    "label": "Status",
+                    "dataType": "System.Int32"
+                  },
+                  {
+                    "id": "DetailsUrl",
+                    "label": "DetailsUrl",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "NodeCaption",
+                    "label": "NodeCaption",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "ConfigTitle",
+                    "label": "ConfigTitle",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "DownloadTime",
+                    "label": "DownloadTime",
+                    "dataType": "System.DateTime"
+                  },
+                  {
+                    "id": "ConfigChnageReportUrl",
+                    "label": "ConfigChnageReportUrl",
+                    "dataType": "System.String"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "properties": {
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT \n ONodes.Status,\n ONodes.DetailsUrl,\n NNodes.NodeCaption,\n ConfigArchive.ConfigTitle,\n ConfigArchive.DownloadTime,\n '/Orion/NCM/ConfigChangeReport.aspx?ConfigID=' + ToString (ConfigArchive.ConfigID) + '&ComparisonType=4&NodeID=' + ToString (NNodes.NodeID) as ConfigChnageReportUrl\nFROM Orion.Nodes AS ONodes \n INNER JOIN NCM.Nodes AS NNodes ON NNodes.CoreNodeId = ONodes.NodeId\n INNER JOIN NCM.ConfigArchive as ConfigArchive ON NNodes.NodeId = ConfigArchive.NodeId\n INNER JOIN Cirrus.CacheDiffResults as DiffResults ON ConfigArchive.ConfigID = DiffResults.ConfigID\nWHERE (DownloadTime >= ADDHOUR(-24, GETDATE()) AND DiffResults.ComparisonType = 4 AND DiffResults.DiffFlag = 1)",
+                    "dataFields": [
+                      {
+                        "id": "Status",
+                        "label": "Status",
+                        "dataType": "System.Int32"
+                      },
+                      {
+                        "id": "DetailsUrl",
+                        "label": "DetailsUrl",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "NodeCaption",
+                        "label": "NodeCaption",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "ConfigTitle",
+                        "label": "ConfigTitle",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "DownloadTime",
+                        "label": "DownloadTime",
+                        "dataType": "System.DateTime"
+                      },
+                      {
+                        "id": "ConfigChnageReportUrl",
+                        "label": "ConfigChnageReportUrl",
+                        "dataType": "System.String"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "columns": [
+                {
+                  "id": "column_47c10ae6-9520-45c7-b822-bdaf2757c244",
+                  "sortable": true,
+                  "label": "Config file",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "LinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "ConfigTitle",
+                        "link": "ConfigChnageReportUrl"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "column_9e20f7d4-a747-415d-94b1-95135829625b",
+                  "sortable": true,
+                  "label": "On node",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "EntityLinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "status": "Status",
+                        "vendor": null,
+                        "link": "DetailsUrl",
+                        "value": "NodeCaption"
+                      },
+                      "iconFormat": "status",
+                      "entityIcon": null
+                    }
+                  }
+                },
+                {
+                  "id": "column_ccd08678-acc2-4373-a514-423453c8c785",
+                  "sortable": true,
+                  "label": "Time of change",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "DatetimeFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "DownloadTime"
+                      },
+                      "option": 0,
+                      "replaceDate": true
+                    }
+                  }
+                }
+              ],
+              "sorterConfiguration": {
+                "sortBy": "column_ccd08678-acc2-4373-a514-423453c8c785",
+                "descendantSorting": false
+              },
+              "hasVirtualScroll": true,
+              "searchConfiguration": {
+                "enabled": true
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "Last 24 hours",
+      "description": "",
+      "unique_key": "NCM-RecentConfigChanges",
+      "name": "Recent Config Changes",
+      "private": false
+    },
+    {
+      "type": "kpi",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Backups",
+            "subtitle": "As of last update",
+            "url": "",
+            "description": ""
+          }
+        },
+        "tiles": {
+          "properties": {
+            "nodes": [
+              "kpi_d4ac8cb8-a7fc-41bb-abcb-fe2c570f3371",
+              "kpi_6a934db0-90fc-4d16-8055-10f63037514f"
+            ]
+          }
+        },
+        "kpi_d4ac8cb8-a7fc-41bb-abcb-fe2c570f3371": {
+          "id": "kpi_d4ac8cb8-a7fc-41bb-abcb-fe2c570f3371",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "select count(1) as TheCount, '/apps/ncm/config-files/backup-status/14' as Link\nfrom NCM.ConfigBackupStatus\nwhere BackupStatus=14",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_d4ac8cb8-a7fc-41bb-abcb-fe2c570f3371",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "select count(1) as TheCount, '/apps/ncm/config-files/backup-status/14' as Link\nfrom NCM.ConfigBackupStatus\nwhere BackupStatus=14",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": "Files",
+              "backgroundColor": "var(--nui-color-semantic-critical)",
+              "units": "Backup failed"
+            }
+          }
+        },
+        "kpi_6a934db0-90fc-4d16-8055-10f63037514f": {
+          "id": "kpi_6a934db0-90fc-4d16-8055-10f63037514f",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "select count(1) as TheCount, '/apps/ncm/config-files/backup-status/3' as Link\nfrom NCM.ConfigBackupStatus\nwhere BackupStatus=3",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_6a934db0-90fc-4d16-8055-10f63037514f",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "select count(1) as TheCount, '/apps/ncm/config-files/backup-status/3' as Link\nfrom NCM.ConfigBackupStatus\nwhere BackupStatus=3",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": "Files",
+              "backgroundColor": "var(--nui-color-chart-ten-light)",
+              "units": "Not configured for backup"
+            }
+          }
+        }
+      },
+      "subtitle": "As of last update",
+      "description": "",
+      "unique_key": "NCM-Backups",
+      "name": "Backups",
+      "private": false
+    },
+    {
+      "type": "proportional",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Last config backup date",
+            "subtitle": "",
+            "url": "",
+            "description": ""
+          }
+        },
+        "chart": {
+          "providers": {
+            "dataSource": {
+              "providerId": "ProportionalSwqlDatasourceService",
+              "properties": {
+                "dataFields": [
+                  {
+                    "id": "TimeRangeDescription",
+                    "label": "TimeRangeDescription",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "Color",
+                    "label": "Color",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "swql": "SELECT 'Older than 7 days' as TimeRangeDescription,\n'#950000' as Color,\nCOUNT (1) as TheCount,\n'/apps/ncm/config-files/last-backup-date/500' as Link FROM NCM.ConfigBackupStatistic where TimeRangeHours=-1\nUNION ALL\n(SELECT 'Last 7 days' as TimeRangeDescription,\n'#dd2c00' as Color,\nCOUNT (1) as TheCount,\n'/apps/ncm/config-files/last-backup-date/168' as Link FROM NCM.ConfigBackupStatistic\nwhere TimeRangeHours=168)\nUNION ALL\n(SELECT 'Last 48 hours' as TimeRangeDescription,\n'#fec406' as Color,\nCOUNT (1) as TheCount,\n'/apps/ncm/config-files/last-backup-date/48' as Link FROM NCM.ConfigBackupStatistic\nwhere TimeRangeHours=48)\nUNION ALL\n(SELECT 'Last 24 hours' as TimeRangeDescription,\n'#00a754' as Color,\nCOUNT (1) as TheCount,'/apps/ncm/config-files/last-backup-date/24' as Link \nFROM NCM.ConfigBackupStatistic\nwhere TimeRangeHours=24)",
+                "categoryField": "TimeRangeDescription",
+                "valueField": "TheCount",
+                "dataFormat": "custom",
+                "iconMappingField": "",
+                "colorMappingField": "Color",
+                "type": "hand-edit",
+                "editor": {}
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "chart",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "dataFields": [
+                      {
+                        "id": "TimeRangeDescription",
+                        "label": "TimeRangeDescription",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "Color",
+                        "label": "Color",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "swql": "SELECT 'Older than 7 days' as TimeRangeDescription,\n'#950000' as Color,\nCOUNT (1) as TheCount,\n'/apps/ncm/config-files/last-backup-date/500' as Link FROM NCM.ConfigBackupStatistic where TimeRangeHours=-1\nUNION ALL\n(SELECT 'Last 7 days' as TimeRangeDescription,\n'#dd2c00' as Color,\nCOUNT (1) as TheCount,\n'/apps/ncm/config-files/last-backup-date/168' as Link FROM NCM.ConfigBackupStatistic\nwhere TimeRangeHours=168)\nUNION ALL\n(SELECT 'Last 48 hours' as TimeRangeDescription,\n'#fec406' as Color,\nCOUNT (1) as TheCount,\n'/apps/ncm/config-files/last-backup-date/48' as Link FROM NCM.ConfigBackupStatistic\nwhere TimeRangeHours=48)\nUNION ALL\n(SELECT 'Last 24 hours' as TimeRangeDescription,\n'#00a754' as Color,\nCOUNT (1) as TheCount,'/apps/ncm/config-files/last-backup-date/24' as Link \nFROM NCM.ConfigBackupStatistic\nwhere TimeRangeHours=24)",
+                    "categoryField": "TimeRangeDescription",
+                    "valueField": "TheCount",
+                    "dataFormat": "custom",
+                    "iconMappingField": "",
+                    "colorMappingField": "Color",
+                    "type": "hand-edit",
+                    "editor": {}
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true,
+              "chartOptions": {
+                "type": "PieChart",
+                "legendPlacement": "Right",
+                "legendFormatter": {
+                  "componentType": "GenericValueFormatterComponent"
+                }
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-LastConfigBackupDate",
+      "name": "Last config backup date",
+      "private": false
+    },
+    {
+      "type": "table",
+      "configuration": {
+        "header": {
+          "properties": {
+            "title": "Overall Running vs. Startup Config Conflicts",
+            "subtitle": "",
+            "url": "",
+            "description": "",
+            "collapsible": false,
+            "collapsed": true
+          }
+        },
+        "table": {
+          "providers": {
+            "dataSource": {
+              "providerId": "TableSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT '/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:'+ToString(CoreNodeID) AS NodeDetailsUrl, NodeName, NodeStatus, '/ui/ncm/configDiff?leftConfigId=' + ToString(LeftConfigID) + '&rightConfigId=' + ToString(RightConfigID) AS ConfigDiffUrl, 'View diff' AS ViewDiffLabel FROM NCM.NodesView\nWHERE RunningVsStartupStatus = 14",
+                "dataFields": [
+                  {
+                    "id": "NodeDetailsUrl",
+                    "label": "NodeDetailsUrl",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "NodeName",
+                    "label": "NodeName",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "NodeStatus",
+                    "label": "NodeStatus",
+                    "dataType": "System.Int32"
+                  },
+                  {
+                    "id": "ConfigDiffUrl",
+                    "label": "ConfigDiffUrl",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "ViewDiffLabel",
+                    "label": "ViewDiffLabel",
+                    "dataType": "System.String"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "properties": {
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT '/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:'+ToString(CoreNodeID) AS NodeDetailsUrl, NodeName, NodeStatus, '/ui/ncm/configDiff?leftConfigId=' + ToString(LeftConfigID) + '&rightConfigId=' + ToString(RightConfigID) AS ConfigDiffUrl, 'View diff' AS ViewDiffLabel FROM NCM.NodesView\nWHERE RunningVsStartupStatus = 14",
+                    "dataFields": [
+                      {
+                        "id": "NodeDetailsUrl",
+                        "label": "NodeDetailsUrl",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "NodeName",
+                        "label": "NodeName",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "NodeStatus",
+                        "label": "NodeStatus",
+                        "dataType": "System.Int32"
+                      },
+                      {
+                        "id": "ConfigDiffUrl",
+                        "label": "ConfigDiffUrl",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "ViewDiffLabel",
+                        "label": "ViewDiffLabel",
+                        "dataType": "System.String"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "columns": [
+                {
+                  "id": "column_d85398cc-ebfc-4ce8-8731-b7c57a2da446",
+                  "sortable": true,
+                  "label": "Node",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "EntityLinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "status": "NodeStatus",
+                        "vendor": null,
+                        "label": "NodeName",
+                        "value": "NodeDetailsUrl",
+                        "link": "NodeDetailsUrl"
+                      },
+                      "iconFormat": "status",
+                      "entityIcon": null
+                    }
+                  }
+                },
+                {
+                  "id": "column_14f258f9-0658-474d-ab81-bba38de8fb4c",
+                  "sortable": true,
+                  "label": "Diff",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "LinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "ViewDiffLabel",
+                        "link": "ConfigDiffUrl"
+                      }
+                    }
+                  }
+                }
+              ],
+              "sorterConfiguration": {
+                "sortBy": "",
+                "descendantSorting": ""
+              },
+              "hasVirtualScroll": true,
+              "searchConfiguration": {
+                "enabled": true
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-RunningVsStartupConflict",
+      "name": "Overall Running vs. Startup Config Conflicts",
+      "private": false
+    },
+    {
+      "type": "kpi",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Jobs",
+            "subtitle": "As of last update",
+            "url": "",
+            "description": "",
+            "collapsible": false,
+            "collapsed": true
+          }
+        },
+        "tiles": {
+          "properties": {
+            "nodes": [
+              "kpi_ae50a1c9-715c-4c0c-a09e-9a0efaa5870a",
+              "kpi_e12b5dc0-fb99-43fa-848b-97b341822432",
+              "kpi_f85337b4-3287-4d0c-a157-ec28d0a3b98a"
+            ]
+          }
+        },
+        "kpi_ae50a1c9-715c-4c0c-a09e-9a0efaa5870a": {
+          "id": "kpi_ae50a1c9-715c-4c0c-a09e-9a0efaa5870a",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "select count(1) as FailedCount, '/Orion/NCM/Resources/Jobs/JobsList.aspx' as Link from \n(select Jobs.NCMJobID \nfrom Cirrus.NCM_NCMJobsView as Jobs\njoin NCM.LatestTransferJobStatus as TransferState\non TransferState.JobId= jobs.NCMJobID\nwhere Jobs.JobEndsWithGeneralError= 0\ngroup by Jobs.NCMJobID\nHAVING Min(TransferState)=Max(TransferState) and Max(TransferState)=3 \nUNION ALL\n(select Jobs.NCMJobID \nfrom Cirrus.NCM_NCMJobsView as Jobs\nwhere Jobs.JobEndsWithGeneralError=1) \n)",
+                "dataFields": [
+                  {
+                    "id": "FailedCount",
+                    "label": "FailedCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_ae50a1c9-715c-4c0c-a09e-9a0efaa5870a",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "select count(1) as FailedCount, '/Orion/NCM/Resources/Jobs/JobsList.aspx' as Link from \n(select Jobs.NCMJobID \nfrom Cirrus.NCM_NCMJobsView as Jobs\njoin NCM.LatestTransferJobStatus as TransferState\non TransferState.JobId= jobs.NCMJobID\nwhere Jobs.JobEndsWithGeneralError= 0\ngroup by Jobs.NCMJobID\nHAVING Min(TransferState)=Max(TransferState) and Max(TransferState)=3 \nUNION ALL\n(select Jobs.NCMJobID \nfrom Cirrus.NCM_NCMJobsView as Jobs\nwhere Jobs.JobEndsWithGeneralError=1) \n)",
+                    "dataFields": [
+                      {
+                        "id": "FailedCount",
+                        "label": "FailedCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": "Jobs",
+              "backgroundColor": "var(--nui-color-semantic-critical)",
+              "units": "Failed"
+            }
+          }
+        },
+        "kpi_e12b5dc0-fb99-43fa-848b-97b341822432": {
+          "id": "kpi_e12b5dc0-fb99-43fa-848b-97b341822432",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "select count(1) as WithErrorsCount, '/Orion/NCM/Resources/Jobs/JobsList.aspx' as Link from\n(select JobId\nfrom Cirrus.NCM_NCMJobsView as Jobs\njoin NCM.LatestTransferJobStatus as TransferState\non TransferState.JobId= jobs.NCMJobID\nwhere Jobs.JobEndsWithGeneralError= 0\ngroup by JobId\nHAVING Min(TransferState)<>Max(TransferState))",
+                "dataFields": [
+                  {
+                    "id": "WithErrorsCount",
+                    "label": "WithErrorsCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_e12b5dc0-fb99-43fa-848b-97b341822432",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "select count(1) as WithErrorsCount, '/Orion/NCM/Resources/Jobs/JobsList.aspx' as Link from\n(select JobId\nfrom Cirrus.NCM_NCMJobsView as Jobs\njoin NCM.LatestTransferJobStatus as TransferState\non TransferState.JobId= jobs.NCMJobID\nwhere Jobs.JobEndsWithGeneralError= 0\ngroup by JobId\nHAVING Min(TransferState)<>Max(TransferState))",
+                    "dataFields": [
+                      {
+                        "id": "WithErrorsCount",
+                        "label": "WithErrorsCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": "Jobs",
+              "backgroundColor": "var(--nui-color-semantic-warning)",
+              "units": "With errors"
+            }
+          }
+        },
+        "kpi_f85337b4-3287-4d0c-a157-ec28d0a3b98a": {
+          "id": "kpi_f85337b4-3287-4d0c-a157-ec28d0a3b98a",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "select count (1) as CompletedCount, '/Orion/NCM/Resources/Jobs/JobsList.aspx' as Link from\n(select JobId\nfrom Cirrus.NCM_NCMJobsView as Jobs\njoin NCM.LatestTransferJobStatus as TransferState\non TransferState.JobId= jobs.NCMJobID\nwhere Jobs.JobEndsWithGeneralError= 0\ngroup by JobId\nHAVING Min(TransferState)=Max(TransferState) and Max(TransferState)=2\n)",
+                "dataFields": [
+                  {
+                    "id": "CompletedCount",
+                    "label": "CompletedCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_f85337b4-3287-4d0c-a157-ec28d0a3b98a",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "select count (1) as CompletedCount, '/Orion/NCM/Resources/Jobs/JobsList.aspx' as Link from\n(select JobId\nfrom Cirrus.NCM_NCMJobsView as Jobs\njoin NCM.LatestTransferJobStatus as TransferState\non TransferState.JobId= jobs.NCMJobID\nwhere Jobs.JobEndsWithGeneralError= 0\ngroup by JobId\nHAVING Min(TransferState)=Max(TransferState) and Max(TransferState)=2\n)",
+                    "dataFields": [
+                      {
+                        "id": "CompletedCount",
+                        "label": "CompletedCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": "Jobs",
+              "backgroundColor": "var(--nui-color-semantic-ok)",
+              "units": "Completed"
+            }
+          }
+        }
+      },
+      "subtitle": "As of last update",
+      "description": "",
+      "unique_key": "NCM-Jobs",
+      "name": "Jobs",
+      "private": false
+    },
+    {
+      "type": "table",
+      "configuration": {
+        "header": {
+          "properties": {
+            "title": "Job transfer issues",
+            "subtitle": "",
+            "url": "",
+            "description": "",
+            "collapsible": false,
+            "collapsed": true
+          }
+        },
+        "table": {
+          "providers": {
+            "dataSource": {
+              "providerId": "TableSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT Jobs.NCMJobName,\n\tStatus.ErrorMessage,\n\tOrionNodes.Status, \n\tOrionNodes.Caption,OrionNodes.DetailsUrl, \n Status.TransferState,\n\t'/apps/ncm/job-log/' + ToString(Jobs.NCMJobID) as JobLogUrl,\n Status.RequestedConfigType\n\tFROM NCM.LatestTransferJobStatus as Status\n\tJOIN Cirrus.NCM_NCMJobs as Jobs on Status.JobId= Jobs.NCMJobID \n\tJOIN NCM.NodeProperties as NCMNodes on NCMNodes.NodeID= Status.NodeID \n\tJOIN Orion.Nodes as OrionNodes \n\ton NCMNodes.CoreNodeID= OrionNodes.NodeID \n\tWHERE TransferState=3\n\tORDER BY Jobs.NCMJobName, OrionNodes.IP_Address",
+                "dataFields": [
+                  {
+                    "id": "NCMJobName",
+                    "label": "NCMJobName",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "ErrorMessage",
+                    "label": "ErrorMessage",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "Status",
+                    "label": "Status",
+                    "dataType": "System.Int32"
+                  },
+                  {
+                    "id": "Caption",
+                    "label": "Caption",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "DetailsUrl",
+                    "label": "DetailsUrl",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "TransferState",
+                    "label": "TransferState",
+                    "dataType": "System.Int32"
+                  },
+                  {
+                    "id": "JobLogUrl",
+                    "label": "JobLogUrl",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "RequestedConfigType",
+                    "label": "RequestedConfigType",
+                    "dataType": "System.String"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "properties": {
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT Jobs.NCMJobName,\n\tStatus.ErrorMessage,\n\tOrionNodes.Status, \n\tOrionNodes.Caption,OrionNodes.DetailsUrl, \n Status.TransferState,\n\t'/apps/ncm/job-log/' + ToString(Jobs.NCMJobID) as JobLogUrl,\n Status.RequestedConfigType\n\tFROM NCM.LatestTransferJobStatus as Status\n\tJOIN Cirrus.NCM_NCMJobs as Jobs on Status.JobId= Jobs.NCMJobID \n\tJOIN NCM.NodeProperties as NCMNodes on NCMNodes.NodeID= Status.NodeID \n\tJOIN Orion.Nodes as OrionNodes \n\ton NCMNodes.CoreNodeID= OrionNodes.NodeID \n\tWHERE TransferState=3\n\tORDER BY Jobs.NCMJobName, OrionNodes.IP_Address",
+                    "dataFields": [
+                      {
+                        "id": "NCMJobName",
+                        "label": "NCMJobName",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "ErrorMessage",
+                        "label": "ErrorMessage",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "Status",
+                        "label": "Status",
+                        "dataType": "System.Int32"
+                      },
+                      {
+                        "id": "Caption",
+                        "label": "Caption",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "DetailsUrl",
+                        "label": "DetailsUrl",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "TransferState",
+                        "label": "TransferState",
+                        "dataType": "System.Int32"
+                      },
+                      {
+                        "id": "JobLogUrl",
+                        "label": "JobLogUrl",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "RequestedConfigType",
+                        "label": "RequestedConfigType",
+                        "dataType": "System.String"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "columns": [
+                {
+                  "id": "column_7275a3de-d225-4158-b0f0-2e3ded72950f",
+                  "sortable": true,
+                  "label": "Job",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "LinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "NCMJobName",
+                        "link": "JobLogUrl"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "column_443f2b1a-c5b0-4132-a171-d2e0ef79b033",
+                  "label": "Config type",
+                  "isActive": true,
+                  "formatter": {
+                    "componentType": "RawFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "RequestedConfigType"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "column_1a713c8e-5c29-4484-86f3-8acfe733ee4a",
+                  "sortable": true,
+                  "label": "Issue",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "RawFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "ErrorMessage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "column_db7f6978-ab07-41b2-b87c-1581762de688",
+                  "sortable": true,
+                  "label": "Affected node",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "EntityLinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "status": "Status",
+                        "vendor": null,
+                        "link": "DetailsUrl",
+                        "value": "Caption"
+                      },
+                      "iconFormat": "status",
+                      "entityIcon": null
+                    }
+                  }
+                }
+              ],
+              "sorterConfiguration": {
+                "descendantSorting": ""
+              },
+              "hasVirtualScroll": true,
+              "searchConfiguration": {
+                "enabled": true
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-JobsWithErrors",
+      "name": "Job transfer issues",
+      "private": false
+    },
+    {
+      "type": "proportional",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Firmware vulnerabilities",
+            "subtitle": "",
+            "url": "",
+            "description": "",
+            "collapsible": false,
+            "collapsed": true
+          }
+        },
+        "chart": {
+          "providers": {
+            "dataSource": {
+              "providerId": "ProportionalSwqlDatasourceService",
+              "properties": {
+                "dataFields": [
+                  {
+                    "id": "Severity",
+                    "label": "Severity",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "Color",
+                    "label": "Color",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "theCount",
+                    "label": "theCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "swql": "SELECT 'High' as Severity, '#dd2c00' as Color, COUNT (1) as theCount, '/Orion/Report.aspx?Report=Vulnerabilities+for+each+Node' as Link\nFROM NCM.VulnerabilitiesAnnouncements as Announcements\nJOIN NCM.VulnerabilitiesAnnouncementsNodes as Nodes\nON Announcements.EntryId= NODES.EntryId\nWHERE Announcements.Score >= 7.0\nUNION ALL\n(SELECT 'Medium' as Severity, '#fec406' as Color, COUNT (1) as theCount, '/Orion/Report.aspx?Report=Vulnerabilities+for+each+Node' as Link\nFROM NCM.VulnerabilitiesAnnouncements as Announcements\nJOIN NCM.VulnerabilitiesAnnouncementsNodes as Nodes\nON Announcements.EntryId= NODES.EntryId\nWHERE Announcements.Score >= 4.0 AND Announcements.Score < 7.0)\nUNION ALL\n(SELECT 'Low' as Severity, '#1d8fb2' as Color, COUNT (1) as theCount, '/Orion/Report.aspx?Report=Vulnerabilities+for+each+Node' as Link\nFROM NCM.VulnerabilitiesAnnouncements as Announcements\nJOIN NCM.VulnerabilitiesAnnouncementsNodes as Nodes\nON Announcements.EntryId= NODES.EntryId\nWHERE Announcements.Score < 4.0 )",
+                "categoryField": "Severity",
+                "valueField": "theCount",
+                "dataFormat": "custom",
+                "iconMappingField": "",
+                "colorMappingField": "Color",
+                "type": "hand-edit",
+                "editor": {}
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "chart",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "dataFields": [
+                      {
+                        "id": "Severity",
+                        "label": "Severity",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "Color",
+                        "label": "Color",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "theCount",
+                        "label": "theCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "swql": "SELECT 'High' as Severity, '#dd2c00' as Color, COUNT (1) as theCount, '/Orion/Report.aspx?Report=Vulnerabilities+for+each+Node' as Link\nFROM NCM.VulnerabilitiesAnnouncements as Announcements\nJOIN NCM.VulnerabilitiesAnnouncementsNodes as Nodes\nON Announcements.EntryId= NODES.EntryId\nWHERE Announcements.Score >= 7.0\nUNION ALL\n(SELECT 'Medium' as Severity, '#fec406' as Color, COUNT (1) as theCount, '/Orion/Report.aspx?Report=Vulnerabilities+for+each+Node' as Link\nFROM NCM.VulnerabilitiesAnnouncements as Announcements\nJOIN NCM.VulnerabilitiesAnnouncementsNodes as Nodes\nON Announcements.EntryId= NODES.EntryId\nWHERE Announcements.Score >= 4.0 AND Announcements.Score < 7.0)\nUNION ALL\n(SELECT 'Low' as Severity, '#1d8fb2' as Color, COUNT (1) as theCount, '/Orion/Report.aspx?Report=Vulnerabilities+for+each+Node' as Link\nFROM NCM.VulnerabilitiesAnnouncements as Announcements\nJOIN NCM.VulnerabilitiesAnnouncementsNodes as Nodes\nON Announcements.EntryId= NODES.EntryId\nWHERE Announcements.Score < 4.0 )",
+                    "categoryField": "Severity",
+                    "valueField": "theCount",
+                    "dataFormat": "custom",
+                    "iconMappingField": "",
+                    "colorMappingField": "Color",
+                    "type": "hand-edit",
+                    "editor": {}
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true,
+              "chartOptions": {
+                "type": "DonutChart",
+                "legendPlacement": "Right",
+                "legendFormatter": {
+                  "componentType": "GenericValueFormatterComponent"
+                }
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-FirmwareVulnerabilities",
+      "name": "Firmware vulnerabilities",
+      "private": false
+    },
+    {
+      "type": "kpi",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "All NCM nodes",
+            "subtitle": "Polling status",
+            "url": "",
+            "description": ""
+          }
+        },
+        "tiles": {
+          "properties": {
+            "nodes": [
+              "kpi_4eb21f86-b256-45c4-9746-a335fe0b0181",
+              "kpi_556516af-b901-4216-8d0f-38123ec80952",
+              "kpi_e2b0669f-6c93-4066-84e3-dcc268612d98",
+              "kpi_1f07bf4e-5630-4646-aae6-14ceac39c609",
+              "kpi_b1307edd-a07c-491d-b168-afbe336bba2c",
+              "kpi_0caa0898-92db-4a12-bf8b-820af4e5926a"
+            ]
+          }
+        },
+        "kpi_4eb21f86-b256-45c4-9746-a335fe0b0181": {
+          "id": "kpi_4eb21f86-b256-45c4-9746-a335fe0b0181",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/2' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 2",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_4eb21f86-b256-45c4-9746-a335fe0b0181",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/2' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 2",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                },
+                "thresholds": {
+                  "criticalThresholdValue": 0,
+                  "warningThresholdValue": 0,
+                  "showThresholds": false,
+                  "reversedThresholds": false
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": " ",
+              "backgroundColor": "var(--nui-color-semantic-down)",
+              "units": "Down"
+            }
+          }
+        },
+        "kpi_556516af-b901-4216-8d0f-38123ec80952": {
+          "id": "kpi_556516af-b901-4216-8d0f-38123ec80952",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/14' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 14",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_556516af-b901-4216-8d0f-38123ec80952",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/14' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 14",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                },
+                "thresholds": {
+                  "criticalThresholdValue": 0,
+                  "warningThresholdValue": 0,
+                  "showThresholds": false,
+                  "reversedThresholds": false
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": " ",
+              "backgroundColor": "var(--nui-color-semantic-critical)",
+              "units": "Critical"
+            }
+          }
+        },
+        "kpi_e2b0669f-6c93-4066-84e3-dcc268612d98": {
+          "id": "kpi_e2b0669f-6c93-4066-84e3-dcc268612d98",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/3' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 3",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_e2b0669f-6c93-4066-84e3-dcc268612d98",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/3' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 3",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                },
+                "thresholds": {
+                  "criticalThresholdValue": 0,
+                  "warningThresholdValue": 0,
+                  "showThresholds": false,
+                  "reversedThresholds": false
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": " ",
+              "backgroundColor": "var(--nui-color-semantic-warning)",
+              "units": "Warning"
+            }
+          }
+        },
+        "kpi_1f07bf4e-5630-4646-aae6-14ceac39c609": {
+          "id": "kpi_1f07bf4e-5630-4646-aae6-14ceac39c609",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/0' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 0",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_1f07bf4e-5630-4646-aae6-14ceac39c609",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/0' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 0",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                },
+                "thresholds": {
+                  "criticalThresholdValue": 0,
+                  "warningThresholdValue": 0,
+                  "showThresholds": false,
+                  "reversedThresholds": false
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": " ",
+              "backgroundColor": "var(--nui-color-semantic-unknown-bg)",
+              "units": "Unknown"
+            }
+          }
+        },
+        "kpi_b1307edd-a07c-491d-b168-afbe336bba2c": {
+          "id": "kpi_b1307edd-a07c-491d-b168-afbe336bba2c",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/-1' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status NOT IN (0,1,2,3,14)",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_b1307edd-a07c-491d-b168-afbe336bba2c",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/-1' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status NOT IN (0,1,2,3,14)",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                },
+                "thresholds": {
+                  "criticalThresholdValue": 0,
+                  "warningThresholdValue": 0,
+                  "showThresholds": false,
+                  "reversedThresholds": false
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": " ",
+              "backgroundColor": "var(--nui-color-semantic-info)",
+              "units": "Other"
+            }
+          }
+        },
+        "kpi_0caa0898-92db-4a12-bf8b-820af4e5926a": {
+          "id": "kpi_0caa0898-92db-4a12-bf8b-820af4e5926a",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/1' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 1",
+                "dataFields": [
+                  {
+                    "id": "TheCount",
+                    "label": "TheCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_0caa0898-92db-4a12-bf8b-820af4e5926a",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT(1) as TheCount, '/apps/ncm/nodes/status/1' as Link\nFROM NCM.Nodes\nWHERE Nodes.Status = 1",
+                    "dataFields": [
+                      {
+                        "id": "TheCount",
+                        "label": "TheCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                },
+                "thresholds": {
+                  "criticalThresholdValue": 0,
+                  "warningThresholdValue": 0,
+                  "showThresholds": false,
+                  "reversedThresholds": false
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": " ",
+              "backgroundColor": "var(--nui-color-semantic-ok)",
+              "units": "Up"
+            }
+          }
+        }
+      },
+      "subtitle": "Polling status",
+      "description": "",
+      "unique_key": "NCM-AllNcmNodesStatus",
+      "name": "All NCM nodes",
+      "private": false
+    },
+    {
+      "type": "proportional",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Policy Violations",
+            "url": "",
+            "subtitle": "",
+            "description": ""
+          }
+        },
+        "chart": {
+          "providers": {
+            "dataSource": {
+              "providerId": "ProportionalSwqlDatasourceService",
+              "properties": {
+                "dataFields": [
+                  {
+                    "id": "ViolationType",
+                    "label": "ViolationType",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "Color",
+                    "label": "Color",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "theCount",
+                    "label": "theCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "swql": "select 'Critical' as ViolationType,'#dd2c00' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere ErrorLevel=2 and IsViolation=1\nUNION ALL\n(select 'Warning' as ViolationType,'#fec406' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere ErrorLevel=1 and IsViolation=1)\nUNION ALL\n(select 'Informational' as ViolationType,'#1d8fb2' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere ErrorLevel=0 and IsViolation=1)\nUNION ALL\n(select 'None' as ViolationType,'#04a454' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere IsViolation=0)",
+                "categoryField": "ViolationType",
+                "valueField": "theCount",
+                "dataFormat": "custom",
+                "iconMappingField": "",
+                "colorMappingField": "Color",
+                "type": "hand-edit",
+                "editor": {}
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "chart",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "dataFields": [
+                      {
+                        "id": "ViolationType",
+                        "label": "ViolationType",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "Color",
+                        "label": "Color",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "theCount",
+                        "label": "theCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "swql": "select 'Critical' as ViolationType,'#dd2c00' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere ErrorLevel=2 and IsViolation=1\nUNION ALL\n(select 'Warning' as ViolationType,'#fec406' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere ErrorLevel=1 and IsViolation=1)\nUNION ALL\n(select 'Informational' as ViolationType,'#1d8fb2' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere ErrorLevel=0 and IsViolation=1)\nUNION ALL\n(select 'None' as ViolationType,'#04a454' as Color, count(1) as theCount, '/Orion/Report.aspx?Report=Policy+Violations' as Link from Cirrus.PolicyCacheResults\nwhere IsViolation=0)",
+                    "categoryField": "ViolationType",
+                    "valueField": "theCount",
+                    "dataFormat": "custom",
+                    "iconMappingField": "",
+                    "colorMappingField": "Color",
+                    "type": "hand-edit",
+                    "editor": {}
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true,
+              "chartOptions": {
+                "type": "DonutChart",
+                "legendPlacement": "Right",
+                "legendFormatter": {
+                  "componentType": "GenericValueFormatterComponent"
+                }
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-PolicyViolations",
+      "name": "Policy Violations",
+      "private": false
+    },
+    {
+      "type": "kpi",
+      "configuration": {
+        "/": {
+          "providers": {
+            "interactionHandler": {
+              "providerId": "NOVA_URL_INTERACTION_HANDLER",
+              "properties": {
+                "url": "${data.rowData.Link}",
+                "newWindow": true
+              }
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "title": "Pending change requests",
+            "subtitle": "",
+            "url": "",
+            "description": "",
+            "collapsible": false,
+            "collapsed": true
+          }
+        },
+        "tiles": {
+          "properties": {
+            "nodes": [
+              "kpi_2eadb624-61f6-430e-acc4-6d1a393e3e68"
+            ]
+          }
+        },
+        "kpi_2eadb624-61f6-430e-acc4-6d1a393e3e68": {
+          "id": "kpi_2eadb624-61f6-430e-acc4-6d1a393e3e68",
+          "componentType": "KpiComponent",
+          "providers": {
+            "dataSource": {
+              "providerId": "KpiSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT COUNT (1) as theCount, '/Orion/NCM/Admin/ConfigChangeApproval/ApprovalRequests.aspx' as Link \nFROM Cirrus.ApproveQueue\n",
+                "dataFields": [
+                  {
+                    "id": "theCount",
+                    "label": "theCount",
+                    "dataType": "System.Int32"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "providerId": "NOVA_KPI_DATASOURCE_ADAPTER",
+              "properties": {
+                "componentId": "kpi_2eadb624-61f6-430e-acc4-6d1a393e3e68",
+                "propertyPath": "widgetData",
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT COUNT (1) as theCount, '/Orion/NCM/Admin/ConfigChangeApproval/ApprovalRequests.aspx' as Link \nFROM Cirrus.ApproveQueue\n",
+                    "dataFields": [
+                      {
+                        "id": "theCount",
+                        "label": "theCount",
+                        "dataType": "System.Int32"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "interactive": true
+            },
+            "widgetData": {
+              "label": "Requests",
+              "backgroundColor": "var(--nui-color-chart-six-light)",
+              "units": "Pending"
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-PendingApproval",
+      "name": "Pending change requests",
+      "private": false
+    },
+    {
+      "type": "table",
+      "configuration": {
+        "header": {
+          "properties": {
+            "title": "All NCM nodes",
+            "subtitle": "",
+            "url": "",
+            "description": ""
+          }
+        },
+        "table": {
+          "providers": {
+            "dataSource": {
+              "providerId": "TableSwqlDatasourceService",
+              "properties": {
+                "swql": "SELECT ONodes.Status, ONodes.DetailsUrl, NNodes.Vendor, NNodes.NodeCaption FROM Orion.Nodes as ONodes INNER JOIN NCM.Nodes as NNodes on NNodes.CoreNodeID = ONodes.NodeID",
+                "dataFields": [
+                  {
+                    "id": "Status",
+                    "label": "Status",
+                    "dataType": "System.Int32"
+                  },
+                  {
+                    "id": "DetailsUrl",
+                    "label": "DetailsUrl",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "Vendor",
+                    "label": "Vendor",
+                    "dataType": "System.String"
+                  },
+                  {
+                    "id": "NodeCaption",
+                    "label": "NodeCaption",
+                    "dataType": "System.String"
+                  }
+                ],
+                "type": "hand-edit"
+              }
+            },
+            "adapter": {
+              "properties": {
+                "dataSource": {
+                  "properties": {
+                    "swql": "SELECT ONodes.Status, ONodes.DetailsUrl, NNodes.Vendor, NNodes.NodeCaption FROM Orion.Nodes as ONodes INNER JOIN NCM.Nodes as NNodes on NNodes.CoreNodeID = ONodes.NodeID",
+                    "dataFields": [
+                      {
+                        "id": "Status",
+                        "label": "Status",
+                        "dataType": "System.Int32"
+                      },
+                      {
+                        "id": "DetailsUrl",
+                        "label": "DetailsUrl",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "Vendor",
+                        "label": "Vendor",
+                        "dataType": "System.String"
+                      },
+                      {
+                        "id": "NodeCaption",
+                        "label": "NodeCaption",
+                        "dataType": "System.String"
+                      }
+                    ],
+                    "type": "hand-edit"
+                  }
+                }
+              }
+            }
+          },
+          "properties": {
+            "configuration": {
+              "columns": [
+                {
+                  "id": "column_b984598c-600e-4145-bdad-1b9b8020af66",
+                  "label": "Node",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "EntityLinkFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "status": "Status",
+                        "vendor": null,
+                        "label": "NodeCaption",
+                        "value": "DetailsUrl",
+                        "link": "DetailsUrl"
+                      },
+                      "iconFormat": "status",
+                      "entityIcon": null
+                    }
+                  }
+                },
+                {
+                  "id": "column_16ebd386-bd0d-4998-adb9-fd072fd132c4",
+                  "label": "Vendor",
+                  "isActive": true,
+                  "width": "",
+                  "formatter": {
+                    "componentType": "RawFormatterComponent",
+                    "properties": {
+                      "dataFieldIds": {
+                        "value": "Vendor"
+                      }
+                    }
+                  }
+                }
+              ],
+              "sorterConfiguration": {
+                "sortBy": null,
+                "descendantSorting": false
+              },
+              "hasVirtualScroll": true,
+              "searchConfiguration": {
+                "enabled": true
+              }
+            }
+          }
+        }
+      },
+      "subtitle": "",
+      "description": "",
+      "unique_key": "NCM-AllNcmNodes",
+      "name": "All NCM nodes",
+      "private": false
+    }
+  ],
+  "remove": null
+}
