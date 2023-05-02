@@ -19,11 +19,10 @@ def main():
     # This is the query we are using
     swqlQuery = """
 SELECT [Nodes].Caption
-        , [Nodes].IPAddress
-        , [Nodes].Uri
+     , [Nodes].IPAddress
+     , [Nodes].Uri
 FROM Orion.Nodes AS [Nodes]
-WHERE [Nodes].Caption LIKE 'LOSA%'
-   OR [Nodes].IPAddress LIKE '10.149.%.%'
+WHERE [Nodes].CustomProperties.City = 'St. Paul, MN'
     """
 
     # Build a connection to the server

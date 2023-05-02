@@ -11,7 +11,7 @@ def main():
     hostName  = 'kmshcoppe01bv.kmsigma.local' # Put your server ip/hostname here
 
     # default is null (empty)
-    newCpCity = 'Austin'
+    newCpCity = 'Minneapolis, MN'
     
     # Build a connection to the server
     print("Enter the username and password for '" + hostName + "'")
@@ -25,7 +25,7 @@ SELECT [Nodes].Caption
         , [Nodes].IPAddress
         , [Nodes].Uri
 FROM Orion.Nodes AS [Nodes]
-WHERE [Nodes].IPAddress LIKE '10.1.%.%'
+WHERE [Nodes].IPAddress LIKE '192.168.21.%'
     """
 
     # let's run the query and store the results in a variable

@@ -26,6 +26,7 @@ SELECT [Nodes].Caption
      , [Nodes].Uri
 FROM Orion.Nodes AS [Nodes]
 WHERE [Nodes].Vendor = 'Windows'
+  AND [Nodes].PollInterval <> 90
     """
 
     # let's run the query and store the results in a variable

@@ -20,23 +20,24 @@ def main():
 
     # Commands
     # things to "undo"
-    # rename [Nodes].NodeID = 165 to 'nocejump01v.demo.lab'
+    # rename [Nodes].NodeID = 4 to 'hpm283fdw'
     # set [Nodes].Vendor = 'Windows' pollinterval to 120
     # set [Nodes].CustomProperties.City to null or '' for everything
     # resumeAlerts for anything in the Orion.AlertSuppression table
     # set all currently "unpluggable" interfaces from true to false
 
-    print("Phase 1: Renaming Node with ID 165")
+    nodeId = '4'
+    resetCaption = 'hpm283fdw'
 
-    query1 = """
-    SELECT Uri FROM Orion.Nodes WHERE NodeID = 165
-    """
+    print("Phase 1: Renaming Node with ID " + nodeId + " to '" + resetCaption + "'")
+
+    query1 = "SELECT Uri FROM Orion.Nodes WHERE NodeID = " + nodeId + " AND Caption <> '" + resetCaption + "'"
 
     response1 = swis.query(query1)
     for result in response1['results']:
         # print("{Uri}".format(**result))
-        # Reset caption to 'nocejump01v.demo.lab'
-        swis.update(result['Uri'], Caption = 'nocejump01v.demo.lab')
+        # Reset caption to 'hpm283fdw'
+        swis.update(result['Uri'], Caption = resetCaption)
 
     print("Phase 1: Complete")
 
@@ -44,22 +45,24 @@ def main():
     print("Phase 2: Resetting Poll Interval to 120")
 
     query2 = """
-    SELECT Uri FROM Orion.Nodes WHERE Vendor = 'Windows' AND PollInterval <> 120
+SELECT Uri FROM Orion.Nodes WHERE Vendor = 'Windows' AND PollInterval <> 120
     """
 
     response2 = swis.query(query2)
     for result in response2['results']:
         #Set PollInterval to 120 (seconds)
         #print("{Uri}".format(**result))
-        swis.update(result['Uri'], PollInterval = 90)
+        swis.update(result['Uri'], PollInterval = 120)
 
     print("Phase 2: Complete (" + str( len( result['Uri'] ) ) + " Nodes updated)")
 
     print("Phase 3: Nullifying Node Custom Property for 'City'")
 
     query3 = """
-    SELECT CONCAT([Nodes].Uri, '/CustomProperties') AS Uri FROM Orion.Nodes AS [Nodes]
-    WHERE IsNull([Nodes].CustomProperties.City, '') <> '' OR [Nodes].CustomProperties.City IS NULL
+SELECT CONCAT([Nodes].Uri, '/CustomProperties') AS Uri
+FROM Orion.Nodes AS [Nodes]
+WHERE IsNull([Nodes].CustomProperties.City, '') <> ''
+   OR [Nodes].CustomProperties.City IS NOT NULL
     """
 
     response3 = swis.query(query3)
@@ -73,22 +76,29 @@ def main():
     print("Phase 4: Re-enabling alerts")
 
     query4 = """
-    SELECT EntityUri AS [Uri]
-    FROM Orion.AlertSuppression
+SELECT [SuppressedAlerts].EntityUri AS [Uri]
+FROM Orion.AlertSuppression AS [SuppressedAlerts]
+JOIN System.ManagedEntity AS [Entities]
+  ON [SuppressedAlerts].EntityUri = [Entities].Uri
+WHERE [Entities].InstanceType = 'Orion.Nodes'
     """
 
     response4 = swis.query(query4)
-    for result in response4['results']:
-        # remove any alert suppression
-        #print("{Uri}".format(**result))
-        swis.invoke('Orion.AlertSuppression', 'ResumeAlerts', result['Uri'])
 
-    print("Phase 4: Complete (" + str( len( result['Uri'] ) ) + " node alerts re-enabled)")
+    uris = [( node['Uri'] ) for node in response4['results']]
+    swis.invoke('Orion.AlertSuppression', 'ResumeAlerts', uris)
+
+    print("Phase 4: Complete (" + str( len( uris ) ) + " node alerts re-enabled)")
 
     print("Phase 5: Re-enabling alerts")
 
     query5 = """
-    SELECT Uri FROM Orion.NPM.Interfaces WHERE Unpluggable = 'TRUE'
+SELECT [Interfaces].Uri
+FROM Orion.NPM.Interfaces AS [Interfaces]
+WHERE [Interfaces].Unpluggable = 'TRUE'
+  AND [Interfaces].TypeDescription = 'Ethernet'
+  AND [Interfaces].Node.Caption = 'KMS-UI-SWITCH'
+  AND [Interfaces].Alias LIKE 'Port %'
     """
 
     response5 = swis.query(query5)

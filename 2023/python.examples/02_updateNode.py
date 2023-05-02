@@ -10,7 +10,7 @@ def main():
     # these are the variables where we store your connection information
     hostName  = 'kmshcoppe01bv.kmsigma.local' # Put your server ip/hostname here
 
-    newCaption = 'JUMPBOX'
+    newCaption = 'My Home Printer'
     
     # This is the query we are using
     swqlQuery = """
@@ -18,7 +18,7 @@ SELECT [Nodes].Caption
      , [Nodes].IPAddress
      , [Nodes].Uri
 FROM Orion.Nodes AS [Nodes]
-WHERE [Nodes].NodeID = 23
+WHERE [Nodes].NodeID = 4
     """
 
     # Build a connection to the server

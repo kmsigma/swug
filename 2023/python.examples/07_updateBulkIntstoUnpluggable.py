@@ -27,12 +27,12 @@ SELECT [Interfaces].Node.Caption
      , [Interfaces].UnPluggable
      , [Interfaces].Uri
 FROM Orion.NPM.Interfaces AS [Interfaces]
-WHERE [Interfaces].UnPluggable = 'FALSE'
-  AND [Interfaces].OperStatus = 2 --Indicates "down"
+WHERE [Interfaces].OperStatus = 2 --Indicates "down"
   AND [Interfaces].AdminStatus = 1 --Indicates "enabled"
+  AND [Interfaces].Unpluggable = 'FALSE'
   AND [Interfaces].TypeDescription = 'Ethernet'
-  AND [Interfaces].Node.Vendor = 'Cisco'
-  AND [Interfaces].InterfaceAlias LIKE '%UserPort%'
+  AND [Interfaces].Node.Caption = 'KMS-UI-SWITCH'
+  AND [Interfaces].Alias LIKE 'Port %'
     """
 
     # let's run the query and store the results in a variable
