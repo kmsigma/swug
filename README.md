@@ -8,6 +8,7 @@ Script examples I and others use at SolarWinds User Groups.
 |:--------------|:-----:|:-----------:|
 |Kevin M. Sparenberg|[KMSigma](https://thwack.solarwinds.com/members/kmsigma)|[kmsigma](https://github.com/kmsigma)|
 |Mícheál Halpin|[michael100](https://thwack.solarwinds.com/members/micheal100)|[micheal100](https://github.com/micheal100)|
+|Dan Jagnow|[dan_jagnow](https://thwack.solarwinds.com/members/dan_5f00_jagnow)|[danjagnow](https://github.com/danjagnow)
 
 ## Additional Resources
 
