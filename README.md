@@ -1,6 +1,6 @@
 # SolarWinds User Groups (SWUG)
 
-![SolarWinds User Group](https://thwack.solarwinds.com/cfs-file/__key/widgetcontainerfiles/3fc3f82483d14ec485ef92e206116d49-g-5V58bvCEQUuxakJnVvQG3w-page-1home-Crw_5F00_faX0dkadtPHSuexjjA-openGraphImage/SWUG_5F00_fullcolor_5F00_square.png)
+![SolarWinds User Group](./assets/graphics/SWUG_fullcolor_standard.png)
 
 Script examples we use at SolarWinds User Groups.  For more information about these free multi-day events for IT Pros who use the SolarWinds solutions, please see the [SWUG page](https://thwack.com/swug) on [THWACK](https://thwack.com).
 
