@@ -9,7 +9,7 @@ $Nodes = Get-SwisData -SwisConnection $SwisConnection -Query $SwqlQuery
 
 #set start and end time
 $StartTime = (Get-Date).ToUniversalTime().AddMinutes(-1)
-$EndTime   = $StartTime.AddHours(6)
+$EndTime = $StartTime.AddHours(6)
 
 # cycle through IDs, and call invoke-swis to unmanage each one
 ForEach ($Node in $Nodes) {
@@ -18,8 +18,8 @@ ForEach ($Node in $Nodes) {
     $UnmanagedNode = Invoke-SwisVerb -SwisConnection $SwisConnection -EntityName "Orion.Nodes" -Verb "Unmanage" -Arguments @( "N:$( $Node.NodeID )", $StartTime, $EndTime, $false )
     if ( $UnmanagedNode ) {
         Write-Host "Success!" -ForegroundColor Green
-    } else 
-    {
+    }
+    else {
         Write-Host "Failure!" -ForegroundColor Red
     }
 
