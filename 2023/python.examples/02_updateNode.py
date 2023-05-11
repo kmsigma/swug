@@ -18,7 +18,7 @@ SELECT [Nodes].Caption
      , [Nodes].IPAddress
      , [Nodes].Uri
 FROM Orion.Nodes AS [Nodes]
-WHERE [Nodes].NodeID = 4
+WHERE [Nodes].Caption = 'hpm283fdw'
     """
 
     # Build a connection to the server
