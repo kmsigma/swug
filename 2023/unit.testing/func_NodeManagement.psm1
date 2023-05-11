@@ -6,7 +6,7 @@ function Get-SwisNodeIds {
         PositionalBinding = $true,
         HelpUri = 'https://thwack.com/orionsdk')]
     [OutputType([bool])]
-    [Alias("Get-NodeIds")]
+    [Alias("Get-SwisNodeIds")]
     Param
     (
         # The connection to the SolarWinds Information Service

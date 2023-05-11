@@ -7,7 +7,6 @@ Credential and Connection Testing
 Import-Module .\2023\unit.testing\func_Base64String.psm1 -Force
 Import-Module .\2023\unit.testing\func_TestSwis.psm1 -Force
 Import-Module .\2023\unit.testing\func_ResetDemo.psm1 -Force
-Import-Module .\2023\unit.testing\func_NodeManagement.psm1 -Force
 
 # If the PowerShell Module isn't enabled but is installed, let's enable it
 if ( -not ( Get-Module -Name 'SwisPowerShell' ) ) {
