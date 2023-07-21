@@ -8,7 +8,7 @@ from orionsdk import SwisClient
 # main() is our main function to do the thing
 def main():
     # these are the variables where we store your connection information
-    hostName  = 'kmshcoppe01bv.kmsigma.local' # Put your server ip/hostname here
+    hostName  = 'kmshcoppe01av.kmsigma.local' # Put your server ip/hostname here
     
     # This is the query we are using
     swqlQuery = """

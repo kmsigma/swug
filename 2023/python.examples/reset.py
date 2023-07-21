@@ -10,7 +10,7 @@ from orionsdk import SwisClient
 # main() is our main function to do the thing
 def main():
     # these are the variables where we store your connection information
-    hostName  = 'kmshcoppe01bv.kmsigma.local' # Put your server ip/hostname here
+    hostName  = 'kmshcoppe01av.kmsigma.local' # Put your server ip/hostname here
 
     # Build a connection to the server
     print("Enter the username and password for '" + hostName + "'")
@@ -26,7 +26,7 @@ def main():
     # resumeAlerts for anything in the Orion.AlertSuppression table
     # set all currently "unpluggable" interfaces from true to false
 
-    nodeId = '4'
+    nodeId = '7'
     resetCaption = 'hpm283fdw'
 
     print("Phase 1: Renaming Node with ID " + nodeId + " to '" + resetCaption + "'")
