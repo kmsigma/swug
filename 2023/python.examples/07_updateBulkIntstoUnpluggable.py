@@ -10,9 +10,6 @@ def main():
     # these are the variables where we store your connection information
     hostName  = 'kmshcoppe01av.kmsigma.local' # Put your server ip/hostname here
 
-    # default is 120
-    newPollInterval = 90
-    
     # Build a connection to the server
     print("Enter the username and password for '" + hostName + "'")
     username = input("Username: ")
