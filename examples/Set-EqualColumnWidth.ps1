@@ -162,7 +162,7 @@ else {
 # I'm choosing to do this is a For loop instead of a ForEach, so I can use $i (the current index) as the progress
 For ( $i = 0; $i -lt $Views.Count; $i++ ) {
     # Build the progress bar
-    Write-Progress -Activity "Updating Views" -Status "Updating $( $Views[$i].ViewTitle )/[ViewID: $( $Views[$i].ViewID )" -PercentComplete ( ( $i / $Views.Count ) * 100)
+    Write-Progress -Activity "Updating Views" -Status "Updating $( $Views[$i].ViewTitle ) [ViewID: $( $Views[$i].ViewID )]" -PercentComplete ( ( $i / $Views.Count ) * 100)
     # Output what we're doing to the screen
     if ( -not ( $Views[$i].IsSame  ) ) {
         Write-Verbose -Message "$( $Views[$i].ViewTitle )/[ViewID: $( $Views[$i].ViewID )]: Updating $( $Views[$i].Columns ) column(s) to $( $Views[$i].EvenColumnWidth ) px each"
